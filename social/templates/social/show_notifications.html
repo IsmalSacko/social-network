@@ -1,0 +1,56 @@
+<div class="dropdown">
+{% if notifications.count > 0 %}
+	<span class="badge rounded-circle bg-danger notification-badge" style="margin-right: 10px!important;" onclick="showNotifications()">{{ notifications.count }}</span>
+{% endif %}
+	<div class="dropdown-content d-none" id="notification-container">
+		{% for notification in notifications %}
+			{% if notification.post %}
+				{% if notification.notification_type == 1 %}
+				<div class="dropdown-item-parent">
+					<a href="{% url 'post-notification' notification.pk notification.post.pk %}">@{{ notification.from_user }}
+                        a répondu à votre post
+                    </a>
+					<span class="dropdown-item-close" onclick="removeNotification(`{% url 'notification-delete' notification.pk %}`, `{{ request.path }}`)">&times;</span>
+				</div>
+				{% elif notification.notification_type == 2 %}
+				<div class="dropdown-item-parent">
+					<a href="{% url 'post-notification' notification.pk notification.post.pk %}">@{{ notification.from_user }}
+                        a commenté votre post
+                    </a>
+					<span class="dropdown-item-close" onclick="removeNotification(`{% url 'notification-delete' notification.pk %}`, `{{ request.path }}`)">&times;</span>
+				</div>
+				{% endif %}
+			{% elif notification.comment %}
+				{% if notification.notification_type == 1 %}
+				<div class="dropdown-item-parent">
+					<a href="{% url 'post-notification' notification.pk notification.comment.post.pk %}">@{{ notification.from_user }}
+                        a aimé votre commentaire
+                    </a>
+					<span class="dropdown-item-close" onclick="removeNotification(`{% url 'notification-delete' notification.pk %}`, `{{ request.path }}`)">&times;</span>
+				</div>
+				{% elif notification.notification_type == 2 %}
+				<div class="dropdown-item-parent">
+					<a href="{% url 'post-notification' notification.pk notification.comment.post.pk %}">@{{ notification.from_user }}
+                        a répondu à votre commentaire
+                    </a>
+					<span class="dropdown-item-close" onclick="removeNotification(`{% url 'notification-delete' notification.pk %}`, `{{ request.path }}`)">&times;</span>
+				</div>
+				{% endif %}
+			{% elif notification.thread %}
+				<div class="dropdown-item-parent">
+					<a href="{% url 'thread-notification' notification.pk notification.thread.pk %}">@{{ notification.from_user }}
+                        vous a envoyé un message
+                    </a>
+					<span class="dropdown-item-close" onclick="removeNotification(`{% url 'notification-delete' notification.pk %}`, `{{ request.path }}`)">&times;</span>
+				</div>
+			{% else %}
+			<div class="dropdown-item-parent">
+					<a href="{% url 'follow-notification' notification.pk notification.from_user.profile.pk %}">@{{ notification.from_user }}
+                        vous a suivi
+                    </a>
+					<span class="dropdown-item-close" onclick="removeNotification(`{% url 'notification-delete' notification.pk %}`, `{{ request.path }}`)">&times;</span>
+				</div>
+			{% endif %}
+			{% endfor %}
+		</div>
+	</div>

@@ -1,0 +1,45 @@
+{% extends 'landing/base.html' %}
+{% load i18n %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}
+    {{ object.user }} - Mettre à jour mon profil
+ {% endblock head_title %}
+
+{% block content %}
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-5 col-sm-6">
+            <a href="{% url 'profile' object.pk %}" class="btn btn-outline-primary">
+                <i class="fas fa-long-arrow-left"></i>
+                Retour au profil
+            </a>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-5 col-sm-12 border-bottom">
+            <h5>
+                Mettre à jour mon profil
+            </h5>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-3 mb-5">
+        <div class="col-md-5 col-sm-12 border-bottom">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary mt-3">
+                        Enregistrer
+                        <i class="fas fa-save"></i>
+
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
